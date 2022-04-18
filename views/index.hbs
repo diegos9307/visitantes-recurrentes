@@ -1,0 +1,18 @@
+<table>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Visits</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each visitorsList}}
+      <tr>
+        <td class="id">{{this._id}}</td>
+        <td>{{this.name}}</td>
+        <td>{{this.count}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

@@ -13,7 +13,7 @@ mongoose.connect(
 
 const VisitorSchema = new mongoose.Schema({
   name: { type: String },
-  count: { type: Number, default: 1 },
+  count: { type: Number, default: 0 },
 });
 const Visitor = mongoose.model("Visitor", VisitorSchema);
 
@@ -32,6 +32,8 @@ app.set(
 
 app.set("view engine", "hbs");
 
+/* 
+MI SOLUCIÓN
 app.get("/", async (req, res) => {
   let usuario = req.query.name;
   if (!usuario || usuario.length === 0) {
@@ -58,31 +60,32 @@ app.get("/", async (req, res) => {
       visitorsList = await Visitor.find();
       res.render("index", { visitorsList });
     }
-    // await Visitor.findOneAndUpdate(query, )
-
-    /*    const filter = { name: usuario };
-    const update = { count : Visitor.count + 1 };
-    let updateVisitor = await Visitor.findOneAndUpdate(filter, update, {
-      new: true,
-    });
-    console.log(updateVisitor); */
-    // console.log(query2);
-
-    // visitorsList = await Visitor.find();
-    // console.log(visitorsList);
-    // await Visitor.findOneAndUpdate(
-    //   { name: usuario },
-    //   { count: Visitor.count + 1 }
-    // );
   }
-});
+}); 
 
-/* app.get("/", async (req, res) => {
-  const visitor = new Visitor({ name: req.query.name || "Anónimo" });
+SOLUCIÓN MAKE IT REAL
+
+*/
+
+app.get("/", async (req, res) => {
+  const name = req.query.name;
+
+  let visitor;
+  if (!name || name.trim().length === 0) {
+    visitor = new Visitor({ name: "Anónimo", count: 1 });
+  } else {
+    visitor = await Visitor.findOne({ name: name });
+    if (!visitor) {
+      visitor = new Visitor({ name: name, count: 1 });
+    } else {
+      visitor.count += 1;
+    }
+  }
   await visitor.save();
-  const visitorsList = await Visitor.find();
-  res.render("index", { visitorsList });
-}); */
+
+  const visitors = await Visitor.find();
+  res.render("index", { visitors: visitors });
+});
 
 app.listen(process.env.PORT, () =>
   console.log(`Listening on port ${process.env.PORT} ...`)

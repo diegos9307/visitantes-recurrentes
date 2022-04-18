@@ -6,8 +6,17 @@
       <th>Visits</th>
     </tr>
   </thead>
-  <tbody>
+  {{!-- <tbody>
     {{#each visitorsList}}
+      <tr>
+        <td class="id">{{this._id}}</td>
+        <td>{{this.name}}</td>
+        <td>{{this.count}}</td>
+      </tr>
+    {{/each}}
+  </tbody> --}}
+  <tbody>
+    {{#each visitors}}
       <tr>
         <td class="id">{{this._id}}</td>
         <td>{{this.name}}</td>
